@@ -4,32 +4,36 @@ import { DraftOrder } from "./shopify";
 const resend = new Resend(process.env.RESEND_API_KEY!);
 
 const FROM_EMAIL = process.env.FROM_EMAIL || "onboarding@resend.dev";
-const TO_EMAIL = process.env.TO_EMAIL || "igarcia@generandoideas.com";
+const TO_EMAIL = [
+  "nsanchez@generandoideas.com",
+  "igarcia@generandoideas.com",
+  "guadalupe.sedeno@suramexico.com"
+];
 
 export async function sendApprovalEmail(order: DraftOrder) {
-    const customerName = order.customer
-        ? `${order.customer.first_name} ${order.customer.last_name}`
-        : "Sin cliente asignado";
+  const customerName = order.customer
+    ? `${order.customer.first_name} ${order.customer.last_name}`
+    : "Sin cliente asignado";
 
-    const companyName = order.customer?.company || order.shipping_address?.company || "";
+  const companyName = order.customer?.company || order.shipping_address?.company || "";
 
-    const lineItemsHtml = order.line_items
-        .map(
-            (item) => `
+  const lineItemsHtml = order.line_items
+    .map(
+      (item) => `
       <tr>
         <td style="padding: 10px 16px; border-bottom: 1px solid #eee; font-size: 14px; color: #333;">${item.title}${item.variant_title ? ` — ${item.variant_title}` : ""}</td>
         <td style="padding: 10px 16px; border-bottom: 1px solid #eee; font-size: 14px; color: #333; text-align: center;">${item.quantity}</td>
         <td style="padding: 10px 16px; border-bottom: 1px solid #eee; font-size: 14px; color: #333; text-align: right;">$${parseFloat(item.price).toFixed(2)} ${order.currency}</td>
       </tr>
     `
-        )
-        .join("");
+    )
+    .join("");
 
-    const { error } = await resend.emails.send({
-        from: FROM_EMAIL,
-        to: [TO_EMAIL],
-        subject: `✅ Orden Corporativa Aprobada: ${order.name}${companyName ? ` — ${companyName}` : ""}`,
-        html: `
+  const { error } = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: [TO_EMAIL],
+    subject: `✅ Orden Corporativa Aprobada: ${order.name}${companyName ? ` — ${companyName}` : ""}`,
+    html: `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
         <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 32px 24px; text-align: center;">
           <h1 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 600;">Orden Corporativa Aprobada</h1>
@@ -50,19 +54,19 @@ export async function sendApprovalEmail(order: DraftOrder) {
               <td style="padding: 4px 0; font-size: 14px; color: #1e293b; font-weight: 500;">${customerName}</td>
             </tr>
             ${companyName
-                ? `<tr>
+        ? `<tr>
               <td style="padding: 4px 0; font-size: 14px; color: #64748b;">Empresa:</td>
               <td style="padding: 4px 0; font-size: 14px; color: #1e293b; font-weight: 500;">${companyName}</td>
             </tr>`
-                : ""
-            }
+        : ""
+      }
             ${order.customer?.email
-                ? `<tr>
+        ? `<tr>
               <td style="padding: 4px 0; font-size: 14px; color: #64748b;">Email:</td>
               <td style="padding: 4px 0; font-size: 14px; color: #1e293b; font-weight: 500;">${order.customer.email}</td>
             </tr>`
-                : ""
-            }
+        : ""
+      }
           </table>
 
           <h2 style="font-size: 16px; color: #1a1a2e; margin: 0 0 12px 0;">Productos</h2>
@@ -91,10 +95,10 @@ export async function sendApprovalEmail(order: DraftOrder) {
         </div>
       </div>
     `,
-    });
+  });
 
-    if (error) {
-        console.error("Error sending approval email:", error);
-        throw new Error(`Failed to send email: ${error.message}`);
-    }
+  if (error) {
+    console.error("Error sending approval email:", error);
+    throw new Error(`Failed to send email: ${error.message}`);
+  }
 }
