@@ -31,7 +31,7 @@ export async function sendApprovalEmail(order: DraftOrder) {
 
   const { error } = await resend.emails.send({
     from: FROM_EMAIL,
-    to: [TO_EMAIL],
+    to: TO_EMAIL,
     subject: `✅ Orden Corporativa Aprobada: ${order.name}${companyName ? ` — ${companyName}` : ""}`,
     html: `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">

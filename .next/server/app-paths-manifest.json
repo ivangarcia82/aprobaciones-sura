@@ -1,0 +1,10 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/draft-orders/[id]/approve/route": "app/api/draft-orders/[id]/approve/route.js",
+  "/api/draft-orders/[id]/route": "app/api/draft-orders/[id]/route.js",
+  "/api/draft-orders/route": "app/api/draft-orders/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/orders/[id]/page": "app/orders/[id]/page.js",
+  "/page": "app/page.js"
+}
