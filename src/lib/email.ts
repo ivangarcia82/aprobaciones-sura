@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY!);
 
 const FROM_EMAIL = "notificaciones@notificaciones.generandoideas.com";
 const TO_EMAIL = [
-  "nsanchez@generandoideas.com",
+  "sura@generandoideas.com",
   "igarcia@generandoideas.com",
   "guadalupe.sedeno@suramexico.com"
 ];
